@@ -1,34 +1,9 @@
-class Ball {
-    constructor(game, map) {
-        this.game = game;
-        this.map = map;
-        this.x = 0;
-        this.y = 1;
-        this.radius = 20;
-    }
+import Entity from "./Entity";
 
-    setRadius(radius) {
-        this.radius = radius;
-    }
-
-    getRadius() {
-        return this.radius;
-    }
-
-    setX(x) {
-        this.x = x;
-    }
-
-    getX() {
-        return this.x;
-    }
-
-    setY(y) {
-        this.y = y;
-    }
-
-    getY() {
-        return this.y;
+class Ball extends Entity {
+    constructor(game, map, engine) {
+        super(game, map, engine)
+        this.setRadius(20);
     }
 
     onKeyPress() {}
@@ -36,13 +11,11 @@ class Ball {
     onKeyUp() {}
 
     update() {
-        this.setY(this.getY() + this.game.getVy());
+        this.setVy(this.getVy() + this.getGravity());
+        this.setY(this.getY() + this.getVy());
         this.setX(0);
 
-        if (this.getY() > (this.map.getHeight() - this.getRadius())) {
-            this.setY(this.map.getHeight() - this.getRadius());
-            this.game.setVy(this.game.getVy() * -0.8);
-        }
+        this.checkOverflowMapY();
     }
 
     render() {

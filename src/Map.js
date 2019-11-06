@@ -15,8 +15,8 @@ class Map {
 
     setCanvas() {
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 500;
-        this.canvas.height = 500;
+        this.canvas.width = 1024;
+        this.canvas.height = 768;
     }
 
     getCanvas() {

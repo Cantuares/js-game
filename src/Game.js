@@ -15,30 +15,6 @@ class Game {
         this.engine.run(this.start.bind(this));
     }
 
-    setGravity(gravity) {
-        this.gravity = gravity;
-    }
-
-    getGravity() {
-        return this.gravity ? this.gravity : 0.8;
-    }
-
-    setVx(vx) {
-        this.vx = vx;
-    }
-
-    getVx() {
-        return this.vx ? this.vx : 1;
-    }
-
-    setVy(vy) {
-        this.vy = vy;
-    }
-
-    getVy() {
-        return this.vy ? this.vy : 1;
-    }
-
     setKeyCode(keyCode) {
         this.keyCode = keyCode;
     }
@@ -48,15 +24,7 @@ class Game {
         return this.keyCode;
     }
 
-    handleInput(keyCode) {
-        if (typeof keyCode === 'string') {
-            this.setKeyCode(keyCode);
-        }
-    }
-
     update() {
-        this.setVx(this.getVx() + this.getGravity());
-        this.setVy(this.getVy() + this.getGravity());
         this.entities.forEach(entity => entity.update());
     }
 
@@ -79,8 +47,10 @@ class Game {
                 40: 'bottom'
             };
 
-            this.handleInput(keys[e.keyCode]);
-            this.entities.forEach(entity => entity.onKeyUp());
+            if (typeof keys[e.keyCode] === 'string') {
+                this.entities.forEach(entity => entity.onKeyUp(keys[e.keyCode]));
+                this.setKeyCode(keys[e.keyCode]);
+            }
         });
 
         window.addEventListener('keypress', e => {
@@ -89,7 +59,7 @@ class Game {
             };
 
             this.handleInput(keys[e.keyCode]);
-            this.entities.forEach(entity => entity.onKeyPress());
+            this.entities.forEach(entity => entity.onKeyPress(keys[e.keyCode]));
         });
     }
 }

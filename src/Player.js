@@ -4,41 +4,39 @@ class Player extends Entity {
     constructor(game, map, engine) {
         super(game, map, engine);
         this.setRadius(30);
-        this.setDebounce(-0.1);
+        this.setDebounce(-0.8);
+        this.keyboardEvents();
+
+        this.holdingSpace = false;
+        this.pressedSpace = false;
     }
 
-    onKeyPress() {}
+    keyboardEvents() {
+        window.addEventListener('keypress', this.onKeyPress.bind(this));
+        window.addEventListener('keyup', this.onKeyUp.bind(this));
+    }
 
-    onKeyUp(keyCode) {
-        if (this.game.getKeyCode() !== keyCode) {
-            this.setVx(1);
-            this.setVy(1);
+    getKeyboardCode(code) {
+        const keys = {
+            //32: 'space',
+            37: 'left',
+            39: 'right',
+            38: 'top',
+            40: 'bottom'
+        };
+
+        return keys[code];
+    }
+
+    onKeyPress(e) {
+        if (e.keyCode === 32) {
+            this.setVx(this.getVx() * 15 + this.getGravity());
         }
     }
+
+    onKeyUp(e) {}
 
     update() {
-        switch (this.game.getKeyCode()) {
-            case 'right':
-                this.setVx(this.getVx() + this.getGravity());
-                this.setX(this.getX() + this.getVx());
-                break;
-            case 'left':
-                this.setVx(this.getVx() + this.getGravity());
-                this.setX(this.getX() - this.getVx());
-                break;
-            case 'top':
-                this.setVy(this.getVy() + this.getGravity());
-                this.setY(this.getY() - this.getVy());
-                break;
-            case 'bottom':
-                this.setVy(this.getVy() + this.getGravity());
-                this.setY(this.getY() + this.getVy());
-                break;
-
-            default:
-                break;
-        }
-
         this.checkOverflowMapX();
         this.checkOverflowMapY();
     }

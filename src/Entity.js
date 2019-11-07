@@ -67,6 +67,16 @@ class Entity {
         return this.debounce;
     }
 
+    setLastKeyPressed(keyCode) {
+        if (typeof keyCode === 'string') {
+            this.lastKeyPressed = keyCode;
+        }
+    }
+
+    getLastKeyPressed() {
+        return this.lastKeyPressed;
+    }
+
     checkOverflowMapX() {
         if (this.getX() > this.map.getWidth() - this.getRadius()) {
             this.setX(this.map.getWidth() - this.getRadius());
